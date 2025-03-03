@@ -10,4 +10,6 @@ export const env = cleanEnv(process.env, {
   CORS_ORIGIN: str({ devDefault: testOnly("http://localhost:3000") }),
   COMMON_RATE_LIMIT_MAX_REQUESTS: num({ devDefault: testOnly(1000) }),
   COMMON_RATE_LIMIT_WINDOW_MS: num({ devDefault: testOnly(1000) }),
+  TELEGRAM_LOGGING_BOT_TOKEN: str({ devDefault: testOnly("") }),
+  TELEGRAM_LOGGING_CHAT_ID: str({ devDefault: testOnly("") }),
 });

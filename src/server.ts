@@ -6,12 +6,13 @@ import { pino } from "pino";
 import { openAPIRouter } from "@/api-docs/openAPIRouter";
 import { healthCheckRouter } from "@/api/healthCheck/healthCheckRouter";
 import { userRouter } from "@/api/user/userRouter";
+import { logger } from "@/common/middleware/customLogger";
 import errorHandler from "@/common/middleware/errorHandler";
 import rateLimiter from "@/common/middleware/rateLimiter";
 import requestLogger from "@/common/middleware/requestLogger";
 import { env } from "@/common/utils/envConfig";
 
-const logger = pino({ name: "server start" });
+logger.info("Server starting...");
 const app: Express = express();
 
 // Set the application to trust the reverse proxy
