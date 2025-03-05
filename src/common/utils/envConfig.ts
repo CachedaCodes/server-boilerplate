@@ -12,4 +12,5 @@ export const env = cleanEnv(process.env, {
   COMMON_RATE_LIMIT_WINDOW_MS: num({ devDefault: testOnly(1000) }),
   TELEGRAM_LOGGING_BOT_TOKEN: str({ devDefault: testOnly("") }),
   TELEGRAM_LOGGING_CHAT_ID: str({ devDefault: testOnly("") }),
+  NOTION_AUTH_TOKEN: str({ devDefault: testOnly("") }),
 });
