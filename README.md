@@ -66,8 +66,16 @@ For a visual guide, watch the [video demo](https://github.com/user-attachments/a
 - Building: `npm run build`
 - Production Mode: Set `.env` to `NODE_ENV="production"` then `npm run build && npm run start`
 
-## 🤝 Feedback and Contributions
+## ♻ New repo from this boilerplate
 
-We'd love to hear your feedback and suggestions for further improvements. Feel free to contribute and join us in making backend development cleaner and faster!
+#### Step 1: 🛠️ Install and setup Github CLI (Windows)
 
-🎉 Happy coding!
+#### Windows
+
+- Install it: `winget install --id GitHub.cli`
+- Set up the login: `gh auth login`
+
+#### Step 2: 🚀 Set up new repo
+
+- Clone the repo: `git clone https://github.com/CachedaCodes/server-boilerplate new-repo-name`
+- Set up new one: `git remote set-url origin https://github.com/CachedaCodes/new-repo-name.git`
