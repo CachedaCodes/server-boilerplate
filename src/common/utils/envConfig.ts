@@ -15,11 +15,8 @@ export const env = cleanEnv(process.env, {
   NOTION_AUTH_TOKEN: str({ devDefault: testOnly("") }),
 
   // Firebase Configuration
-  FIREBASE_PROJECT_ID: str({ desc: "Firebase Project ID" }),
-  FIREBASE_DATABASE_URL: url({ desc: "Firebase Database URL" }),
-  FIREBASE_STORAGE_BUCKET: str({ desc: "Firebase Storage Bucket" }),
-  FIREBASE_SERVICE_ACCOUNT_KEY: str({
-    desc: "Firebase service account key JSON",
-    default: "", // Optional in some environments
-  }),
+  FIREBASE_PROJECT_ID: str({ devDefault: testOnly("") }),
+  FIREBASE_DATABASE_URL: url({ devDefault: testOnly("") }),
+  FIREBASE_STORAGE_BUCKET: str({ devDefault: testOnly("") }),
+  FIREBASE_SERVICE_ACCOUNT_KEY: str({ devDefault: testOnly("") }),
 });
