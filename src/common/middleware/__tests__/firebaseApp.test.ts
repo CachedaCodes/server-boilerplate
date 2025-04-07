@@ -1,145 +1,84 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { initializeApp } from "firebase/app";
+import { collection, doc, getDoc, getDocs, getFirestore, setDoc } from "firebase/firestore";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
-// Mock the firebase-admin modules
-vi.mock("firebase-admin/app", () => {
-  const mockApp = {
-    name: "mock-firebase-app",
-    // Add other app methods as needed
-  };
+vi.mock("firebase/app", () => ({
+  initializeApp: vi.fn().mockReturnValue("app"),
+}));
 
-  return {
-    initializeApp: vi.fn().mockReturnValue(mockApp),
-    cert: vi.fn((serviceAccount) => ({ credential: serviceAccount })),
-    getApps: vi.fn().mockReturnValue([]),
-  };
-});
+vi.mock("firebase/firestore", () => ({
+  getFirestore: vi.fn().mockReturnValue("firestore"),
+  collection: vi.fn().mockReturnValue("collection"),
+  getDocs: vi.fn(),
+  doc: vi.fn().mockReturnValue("doc"),
+  getDoc: vi.fn(),
+  setDoc: vi.fn().mockReturnValue("setDoc"),
+  query: vi.fn(),
+}));
 
-vi.mock("firebase-admin/firestore", () => {
-  const mockFirestore = {
-    collection: vi.fn((name) => ({
-      doc: vi.fn(),
-      add: vi.fn(),
-      get: vi.fn(),
-      name,
-    })),
-    settings: vi.fn(),
-  };
+describe("Firebase App", () => {
+  let FirebaseService: any;
 
-  return {
-    getFirestore: vi.fn().mockReturnValue(mockFirestore),
-  };
-});
+  describe("FirebaseService", () => {
+    beforeAll(async () => {
+      vi.clearAllMocks();
 
-// Mock the environment configuration
-vi.mock("@/common/utils/envConfig", () => {
-  return {
-    env: {
-      FIREBASE_PROJECT_ID: "mock-project-id",
-      FIREBASE_DATABASE_URL: "https://mock-project.firebaseio.com",
-      FIREBASE_STORAGE_BUCKET: "mock-project.appspot.com",
-      FIREBASE_SERVICE_ACCOUNT_KEY: JSON.stringify({
-        type: "service_account",
-        project_id: "mock-project-id",
-        // Add other service account fields as needed
-      }),
-    },
-  };
-});
-
-describe("FirebaseApp Middleware", () => {
-  beforeEach(() => {
-    // Clear cache between tests to reset singleton
-    vi.resetModules();
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it("should initialize firebase app with correct config", async () => {
-    // Import the firebase modules to get the mocked functions
-    const { initializeApp, cert } = await import("firebase-admin/app");
-    const { getFirestore } = await import("firebase-admin/firestore");
-
-    // Import our firebase service (this should initialize the app)
-    const { firebaseApp, firestore } = await import("../firebaseApp");
-
-    // Check that firebase was initialized with correct config
-    expect(initializeApp).toHaveBeenCalledOnce();
-    expect(initializeApp).toHaveBeenCalledWith(
-      expect.objectContaining({
-        projectId: "mock-project-id",
-        databaseURL: "https://mock-project.firebaseio.com",
-        storageBucket: "mock-project.appspot.com",
-      }),
-    );
-
-    // Check that Firestore was initialized
-    expect(getFirestore).toHaveBeenCalledOnce();
-
-    // Check exports are defined
-    expect(firebaseApp).toBeDefined();
-    expect(firestore).toBeDefined();
-  });
-
-  it("should return the same instance when imported multiple times (singleton pattern)", async () => {
-    // First import
-    const firstImport = await import("../firebaseApp");
-
-    // Second import should reuse the same instance
-    const secondImport = await import("../firebaseApp");
-
-    // The app and firestore instances should be the same objects
-    expect(firstImport.firebaseApp).toBe(secondImport.firebaseApp);
-    expect(firstImport.firestore).toBe(secondImport.firestore);
-
-    // Check that firebase was only initialized once
-    const { initializeApp } = await import("firebase-admin/app");
-    expect(initializeApp).toHaveBeenCalledOnce();
-  });
-
-  it("should handle missing service account key", async () => {
-    // Update the mock to have an empty service account key
-    vi.mock("@/common/utils/envConfig", () => {
-      return {
-        env: {
-          FIREBASE_PROJECT_ID: "mock-project-id",
-          FIREBASE_DATABASE_URL: "https://mock-project.firebaseio.com",
-          FIREBASE_STORAGE_BUCKET: "mock-project.appspot.com",
-          FIREBASE_SERVICE_ACCOUNT_KEY: "", // Empty service account
-        },
-      };
+      const firebaseAppModule = await import("../firebaseApp");
+      FirebaseService = firebaseAppModule.FirebaseService;
     });
 
-    // Reset modules to ensure our new mock is used
-    vi.resetModules();
-
-    const { initializeApp } = await import("firebase-admin/app");
-    const { firebaseApp } = await import("../firebaseApp");
-
-    // Check that firebase was still initialized (with undefined credential)
-    expect(initializeApp).toHaveBeenCalledWith(
-      expect.objectContaining({
-        credential: undefined, // This should be undefined now
-        projectId: "mock-project-id",
-      }),
-    );
-
-    // App should still be defined
-    expect(firebaseApp).toBeDefined();
-  });
-
-  it("should throw an error if initialization fails", async () => {
-    // Make initializeApp throw an error
-    const { initializeApp } = await import("firebase-admin/app");
-    vi.mocked(initializeApp).mockImplementationOnce(() => {
-      throw new Error("Firebase initialization failed");
+    it("should initialize Firebase app and Firestore successfully", () => {
+      expect(initializeApp).toHaveBeenCalled();
+      expect(getFirestore).toHaveBeenCalled();
     });
 
-    // Reset modules to ensure our mock error is triggered
-    vi.resetModules();
+    it("should return the same instance of FirebaseService", () => {
+      const instance1 = FirebaseService.getInstance();
+      const instance2 = FirebaseService.getInstance();
 
-    // Import should now throw an error
-    await expect(import("../firebaseApp")).rejects.toThrow("Failed to initialize Firebase");
+      expect(instance1).toBe(instance2);
+    });
+  });
+
+  describe("FirestoreCollection", () => {
+    const collectionName = "testCollection";
+    let firestoreCollection: any;
+
+    beforeAll(async () => {
+      vi.clearAllMocks();
+
+      const firebaseAppModule = await import("../firebaseApp");
+      FirebaseService = firebaseAppModule.FirebaseService;
+      firestoreCollection = new firebaseAppModule.FirestoreCollection(collectionName);
+    });
+
+    it("should create a Firestore collection reference", () => {
+      expect(collection).toHaveBeenCalledWith("firestore", collectionName);
+    });
+
+    it("should query the collection", async () => {
+      await firestoreCollection.queryCollection();
+      expect(getDocs).toHaveBeenCalled();
+    });
+
+    it("should get all documents from the collection", async () => {
+      await firestoreCollection.getAllDocs();
+      expect(getDocs).toHaveBeenCalledWith("collection");
+    });
+
+    it("should get a document by ID", async () => {
+      const docId = "testDocId";
+      await firestoreCollection.getDoc(docId);
+      expect(doc).toHaveBeenCalledWith("collection", docId);
+      expect(getDoc).toHaveBeenCalledWith("doc");
+    });
+
+    it("should set a document by ID", async () => {
+      const docId = "testDocId";
+      const data = { key: "value" };
+      await firestoreCollection.setDoc(docId, data);
+      expect(doc).toHaveBeenCalledWith("collection", docId);
+      expect(setDoc).toHaveBeenCalledWith(expect.anything(), data);
+    });
   });
 });
