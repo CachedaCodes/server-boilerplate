@@ -78,4 +78,15 @@ For a visual guide, watch the [video demo](https://github.com/user-attachments/a
 #### Step 2: 🚀 Set up new repo
 
 - Clone the repo: `git clone https://github.com/CachedaCodes/server-boilerplate new-repo-name`
-- Set up new one: `git remote set-url origin https://github.com/CachedaCodes/new-repo-name.git`
+- Clear previous commits: 
+> `cd new-repo-name`
+>
+>`rm -rf .git` (PowerShell: `Remove-Item -Recurse -Force .git`)
+>
+>`git init`
+>
+>`git add .`
+>
+>`git commit -m "Initial commit from boilerplate"`
+- Set up new reo: `gh repo create new-repo-name --private --source=.`
+- Push changes: `git push -u origin main`
