@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^7.0.0",
-    "@notionhq/client": "^2.2.16",
+    "@notionhq/client": "^3.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
