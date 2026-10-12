@@ -52,7 +52,7 @@
     "tsup": "^8.0.2",
     "tsx": "^4.7.2",
     "typescript": "^5.4.4",
-    "vite-tsconfig-paths": "^5.0.0",
+    "vite-tsconfig-paths": "^6.0.0",
     "vitest": "^3.0.0"
   },
   "lint-staged": {
