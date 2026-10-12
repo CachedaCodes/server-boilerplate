@@ -3,10 +3,22 @@
   "extends": ["config:recommended", "customManagers:biomeVersions", ":automergeRequireAllStatusChecks"],
   "labels": ["chore: dependencies"],
   "dependencyDashboard": true,
+  "minimumReleaseAge": "30 days",
+  "internalChecksFilter": "strict",
   "lockFileMaintenance": {
     "enabled": true
   },
   "packageRules": [
+    {
+      "description": "Do not require Minimum Release Age for update types that do not provide a release timestamp",
+      "matchUpdateTypes": ["lockFileMaintenance", "pin", "replacement", "bump", "lockfileUpdate", "rollback"],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "Do not hold updates without a release timestamp indefinitely (digest, lock file maintenance)",
+      "matchUpdateTypes": ["digest", "pinDigest", "lockFileMaintenance"],
+      "minimumReleaseAgeBehaviour": "timestamp-optional"
+    },
     {
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "groupName": "all non-major dependencies",
