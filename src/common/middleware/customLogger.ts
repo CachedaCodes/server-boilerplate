@@ -1,7 +1,7 @@
 import { Writable } from "node:stream";
 import TelegramBot from "node-telegram-bot-api";
 import type { Logger, LoggerOptions } from "pino";
-import { pino } from "pino";
+import { levels, pino } from "pino";
 import { env } from "@/common/utils/envConfig";
 
 class LogInterceptor extends Writable {
@@ -22,7 +22,7 @@ class LogInterceptor extends Writable {
     // Extract the message and level
     const message = logObject.msg;
     if (!message) return;
-    const level = logObject.level ? pino.levels.labels[logObject.level].toUpperCase() : "UNKNOWN";
+    const level = logObject.level ? levels.labels[logObject.level].toUpperCase() : "UNKNOWN";
 
     // Log the intercepted message
     if (logObject.logTelegram) {

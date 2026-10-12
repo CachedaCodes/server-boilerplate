@@ -40,7 +40,7 @@ export class FirebaseService {
 
       logger.info("Firebase initialized successfully");
     } catch (error) {
-      logger.error("Error initializing Firebase:", error);
+      logger.error({ err: error }, "Error initializing Firebase:");
       throw new Error("Failed to initialize Firebase");
     }
   }
