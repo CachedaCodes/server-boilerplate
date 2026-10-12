@@ -1,6 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import { z } from "zod";
 
+import "@/common/utils/zodExtensions";
+
 export class ServiceResponse<T = null> {
   readonly success: boolean;
   readonly message: string;

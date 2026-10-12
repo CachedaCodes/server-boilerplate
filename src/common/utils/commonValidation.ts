@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import "@/common/utils/zodExtensions";
+
 export const commonValidations = {
   id: z
     .string()
