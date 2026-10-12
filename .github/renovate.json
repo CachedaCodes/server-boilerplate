@@ -3,7 +3,7 @@
   "extends": ["config:recommended", "customManagers:biomeVersions", ":automergeRequireAllStatusChecks"],
   "labels": ["chore: dependencies"],
   "dependencyDashboard": true,
-  "minimumReleaseAge": "30 days",
+  "minimumReleaseAge": "15 days",
   "internalChecksFilter": "strict",
   "lockFileMaintenance": {
     "enabled": true
