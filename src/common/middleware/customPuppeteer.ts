@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
-import { type ConnectResult, type Options, connect } from "puppeteer-real-browser";
+import { type ConnectResult, connect, type Options } from "puppeteer-real-browser";
 
 type EnrichedPuppeteerConnection = ConnectResult & {
   setDownloadPath: (downloadPath: string) => Promise<void>;

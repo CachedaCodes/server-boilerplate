@@ -1,17 +1,17 @@
-import { logger } from "@/common/middleware/customLogger";
-import { env } from "@/common/utils/envConfig";
 import { type FirebaseApp, initializeApp } from "firebase/app";
 import {
   type CollectionReference,
-  type Firestore,
   collection,
   doc,
+  type Firestore,
   getDoc,
   getDocs,
   getFirestore,
   query,
   setDoc,
 } from "firebase/firestore";
+import { logger } from "@/common/middleware/customLogger";
+import { env } from "@/common/utils/envConfig";
 import type { FirestoreDoc } from "../types/firebase";
 import type { DropFirst } from "../types/utils";
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", "customManagers:biomeVersions"],
+  "extends": ["config:recommended", "customManagers:biomeVersions", ":automergeRequireAllStatusChecks"],
   "labels": ["chore: dependencies"],
   "dependencyDashboard": true,
   "lockFileMaintenance": {
@@ -26,11 +26,11 @@
       "automerge": true
     },
     {
-      "packagePatterns": ["@types", "typescript"],
+      "matchPackageNames": ["typescript", "/^@types//"],
       "groupName": "typescript"
     },
     {
-      "packagePatterns": ["@vitest", "vitest"],
+      "matchPackageNames": ["vitest", "/^@vitest//"],
       "groupName": "vitest"
     }
   ]

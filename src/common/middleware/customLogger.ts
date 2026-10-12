@@ -1,8 +1,8 @@
 import { Writable } from "node:stream";
-import { env } from "@/common/utils/envConfig";
 import TelegramBot from "node-telegram-bot-api";
-import { pino } from "pino";
 import type { Logger, LoggerOptions } from "pino";
+import { pino } from "pino";
+import { env } from "@/common/utils/envConfig";
 
 class LogInterceptor extends Writable {
   private readonly telegraBot: TelegramBot;
@@ -15,7 +15,7 @@ class LogInterceptor extends Writable {
     this.telegraBot = new TelegramBot(env.TELEGRAM_LOGGING_BOT_TOKEN, { polling: false });
   }
 
-  _write(chunk: any, encoding: BufferEncoding, callback: (error?: Error | null) => void): void {
+  _write(chunk: any, _encoding: BufferEncoding, callback: (error?: Error | null) => void): void {
     // Parse the JSON log object
     const logObject = JSON.parse(chunk.toString());
 
