@@ -5,6 +5,7 @@ export default defineConfig({
   test: {
     globals: true,
     environment: "node",
+    clearMocks: false,
     include: ["**/__tests__/**/*.{test,spec}.{js,ts}"],
     exclude: ["**/node_modules/**", "**/dist/**"],
     coverage: {
